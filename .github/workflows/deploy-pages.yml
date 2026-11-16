@@ -19,14 +19,26 @@ jobs:
     steps:
       - name: Checkout website
         uses: actions/checkout@v4
+      - name: Prepare original website when supplied
+        shell: bash
+        run: |
+          mkdir -p _site
+          if [ -f "Sri_Lakshmika_Sampada_website(1).zip" ]; then
+            mkdir -p /tmp/sampada-original
+            unzip -q "Sri_Lakshmika_Sampada_website(1).zip" -d /tmp/sampada-original
+            cp -a /tmp/sampada-original/sri_lakshmika_sampada_website/. _site/
+            echo "Using the exact approved original boutique design and logo from the uploaded ZIP"
+          else
+            cp index.html styles.css products.js script.js _site/
+            cp -a images assets _site/
+            echo "Original ZIP has not been uploaded; serving temporary prototype"
+          fi
       - name: Configure Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - name: Upload website
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - name: Publish website
         id: deployment
         uses: actions/deploy-pages@v4
