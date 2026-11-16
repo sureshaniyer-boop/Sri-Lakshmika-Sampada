@@ -13,3 +13,169 @@
 .hero-model-art .hero-art-seal{right:-15px;bottom:25px;z-index:2}
 @media(max-width:730px){.hero-art-block{max-width:470px;margin-inline:auto;gap:19px}.hero-model-art{width:100%;min-height:0;height:480px}.hero-art-caption{font-size:22px}}
 @media(max-width:440px){.hero-art-block{width:92%}.hero-model-art{width:100%;height:410px}.hero-model-art .hero-art-seal{right:-13px;bottom:15px}}
+
+/* ============================================
+   SRI LAKSHMIKA SAMPADA
+   PREMIUM HERO MODEL DISPLAY
+   Desktop + Tablet + Mobile
+   ============================================ */
+
+/* Photograph and caption container */
+.hero-art-block {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Premium portrait frame */
+.hero-art.hero-model-art {
+  width: min(100%, 465px);
+  height: auto !important;
+  min-height: 0 !important;
+  position: relative;
+  padding: 12px;
+  margin: 0 auto;
+  background: linear-gradient(
+    145deg,
+    #a5794e,
+    #ead19d 35%,
+    #90602e 70%,
+    #e6c68d
+  );
+  border: 1px solid #e5c48c;
+  border-radius: 3px;
+  box-shadow:
+    0 20px 50px rgba(19, 4, 12, 0.32),
+    0 0 24px rgba(210, 164, 94, 0.12);
+}
+
+/* Inner frame: no fixed height */
+.hero-art-inner.hero-photo-frame {
+  display: block;
+  width: 100%;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 6px;
+  overflow: hidden;
+  position: relative;
+  background: #4d192c;
+  border: 1px solid rgba(255, 230, 175, 0.65);
+}
+
+/* Preserve full photograph */
+.hero-photo-frame picture {
+  display: block;
+  width: 100%;
+  height: auto !important;
+}
+
+/* Critical fix: remove image cropping */
+.hero-photo-frame .hero-model-image {
+  display: block;
+  width: 100%;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center center;
+  border-radius: 1px;
+  filter: saturate(1.04) contrast(1.02);
+}
+
+/* Luxury circular badge */
+.hero-model-art .hero-art-seal {
+  position: absolute;
+  right: -19px;
+  bottom: 46px;
+  z-index: 3;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  background: #e8c586;
+  border: 3px solid #6b2840;
+  color: #4e192c;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Caption BELOW the photograph */
+.hero-art-caption {
+  margin: 0;
+  color: #edcb91;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 24px;
+  line-height: 1.4;
+  font-style: italic;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: 55px;
+  }
+
+  .hero-art.hero-model-art {
+    width: min(100%, 445px);
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-art.hero-model-art {
+    width: min(100%, 410px);
+  }
+
+  .hero-art-caption {
+    font-size: 21px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-art-block {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    gap: 18px;
+  }
+
+  .hero-art.hero-model-art {
+    width: calc(100% - 24px);
+    padding: 9px;
+  }
+
+  .hero-photo-frame {
+    padding: 4px;
+  }
+
+  .hero-model-art .hero-art-seal {
+    width: 77px;
+    height: 77px;
+    right: -17px;
+    bottom: 35px;
+    font-size: 11px;
+  }
+
+  .hero-art-caption {
+    font-size: clamp(18px, 5vw, 22px);
+    padding: 0 10px;
+  }
+}
