@@ -40,7 +40,12 @@ jobs:
           grep -q 'PREMIUM HERO MODEL DISPLAY' styles.css || { echo "::error::Updated hero CSS section missing"; exit 1; }
           printf '\n/* Hero portrait updates from repository styles.css */\n' >> _site/styles.css
           sed -n '/^\/\* ============================================/,$p' styles.css >> _site/styles.css
-          grep -q 'object-fit: contain !important' _site/styles.css || { echo "::error::Portrait no-crop CSS not applied"; exit 1; }
+          # The original HTML uses .hero-model-photo; apply a separate desktop-only
+          # override after the original and previous CSS. Keep mobile unchanged.
+          test -s hero-desktop-fix.css || { echo "::error::Desktop hero fix missing"; exit 1; }
+          cat hero-desktop-fix.css >> _site/styles.css
+          grep -q '.hero-model-photo picture > img' _site/styles.css || { echo "::error::Correct portrait selector missing"; exit 1; }
+          grep -q 'min-width: 801px' _site/styles.css || { echo "::error::Desktop breakpoint missing"; exit 1; }
           echo "Publishing original website and model assets with latest responsive portrait CSS"
           ls -lh _site/assets/
       - name: Configure Pages
