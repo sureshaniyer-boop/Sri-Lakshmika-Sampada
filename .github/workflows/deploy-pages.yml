@@ -19,20 +19,23 @@ jobs:
     steps:
       - name: Checkout website
         uses: actions/checkout@v4
-      - name: Prepare original website when supplied
+      - name: Prepare exact approved boutique website
         shell: bash
         run: |
-          mkdir -p _site
-          if [ -f "Sri_Lakshmika_Sampada_website(1).zip" ]; then
-            mkdir -p /tmp/sampada-original
-            unzip -q "Sri_Lakshmika_Sampada_website(1).zip" -d /tmp/sampada-original
-            cp -a /tmp/sampada-original/sri_lakshmika_sampada_website/. _site/
-            echo "Using the exact approved original boutique design and logo from the uploaded ZIP"
-          else
-            cp index.html styles.css products.js script.js _site/
-            cp -a images assets _site/
-            echo "Original ZIP has not been uploaded; serving temporary prototype"
-          fi
+          set -euo pipefail
+          ZIP="Sri_Lakshmika_Sampada_website.zip"
+          test -f "$ZIP" || { echo "::error::Missing original boutique website ZIP: $ZIP"; exit 1; }
+          mkdir -p /tmp/sampada-original _site
+          unzip -q "$ZIP" -d /tmp/sampada-original
+          ROOT="/tmp/sampada-original/sri_lakshmika_sampada_website"
+          test -f "$ROOT/index.html" || { echo "::error::Original website index.html not found"; exit 1; }
+          test -s "$ROOT/assets/sri-lakshmika-hero-model.webp" || { echo "::error::Hero model photo missing from archive"; exit 1; }
+          test -s "$ROOT/assets/sri-lakshmika-hero-model.jpg" || { echo "::error::Hero model JPG missing from archive"; exit 1; }
+          test -s "$ROOT/assets/sri-lakshmika-logo.png" || { echo "::error::Original boutique logo missing from archive"; exit 1; }
+          grep -q 'sri-lakshmika-hero-model' "$ROOT/index.html" || { echo "::error::Home page not referencing model photograph"; exit 1; }
+          cp -a "$ROOT"/. _site/
+          echo "Verified and publishing original boutique website with model photograph and logo"
+          ls -lh _site/assets/
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload website
