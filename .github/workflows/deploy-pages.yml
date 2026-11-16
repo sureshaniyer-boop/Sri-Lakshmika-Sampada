@@ -34,6 +34,11 @@ jobs:
             ZIP="$FIXED_ZIP"
             echo "Publishing corrected non-distorted front-view portrait animation"
           fi
+          UPDATED_FRONT_ZIP="Sri_Lakshmika_Sampada_Animated_New_Front.zip"
+          if [ -f "$UPDATED_FRONT_ZIP" ]; then
+            ZIP="$UPDATED_FRONT_ZIP"
+            echo "Publishing updated fuller-figure front model with original back view and wipe animation"
+          fi
           test -f "$ZIP" || { echo "::error::Missing boutique website archive"; exit 1; }
           mkdir -p /tmp/sampada-original _site
           unzip -q "$ZIP" -d /tmp/sampada-original
@@ -43,7 +48,7 @@ jobs:
           test -s "$ROOT/assets/sri-lakshmika-hero-model.jpg" || { echo "::error::Hero model JPG missing from archive"; exit 1; }
           test -s "$ROOT/assets/sri-lakshmika-logo.png" || { echo "::error::Original boutique logo missing from archive"; exit 1; }
           grep -q 'sri-lakshmika-hero-model' "$ROOT/index.html" || { echo "::error::Home page not referencing model photograph"; exit 1; }
-          if [ "$ZIP" = "$ANIMATED_ZIP" ] || [ "$ZIP" = "$FIXED_ZIP" ]; then
+          if [ "$ZIP" = "$ANIMATED_ZIP" ] || [ "$ZIP" = "$FIXED_ZIP" ] || [ "$ZIP" = "$UPDATED_FRONT_ZIP" ]; then
             test -s "$ROOT/assets/sri-lakshmika-hero-front.webp" || { echo "::error::Front portrait missing"; exit 1; }
             test -s "$ROOT/assets/sri-lakshmika-hero-front.jpg" || { echo "::error::Front JPG missing"; exit 1; }
             test -s "$ROOT/hero-wipe.js" || { echo "::error::Animation script missing"; exit 1; }
