@@ -1,0 +1,54 @@
+/* Desktop-only portrait hero correction.
+   Keep existing mobile design untouched at widths 800px and below.
+   The approved original HTML uses .hero-model-photo, not .hero-photo-frame. */
+@media (min-width: 801px) {
+  .hero-art-block {
+    width: 100%;
+    max-width: 470px;
+    margin-inline: auto;
+  }
+
+  .hero-art.hero-model-art {
+    width: min(100%, 445px);
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 12px;
+    box-sizing: border-box;
+    margin: 0 auto;
+  }
+
+  .hero-art-inner.hero-model-photo {
+    display: block !important;
+    width: 100%;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0;
+    overflow: hidden;
+    background: #461c2d;
+  }
+
+  .hero-model-photo picture {
+    display: block !important;
+    height: auto !important;
+    width: 100%;
+  }
+
+  .hero-model-photo picture > img {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    filter: saturate(1.04) contrast(1.02);
+  }
+
+  .hero-model-art .hero-art-seal {
+    right: -20px;
+    bottom: 45px;
+  }
+
+  .hero-art-caption {
+    margin-top: 0;
+  }
+}
