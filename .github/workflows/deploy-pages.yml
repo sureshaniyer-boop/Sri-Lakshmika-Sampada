@@ -34,7 +34,14 @@ jobs:
           test -s "$ROOT/assets/sri-lakshmika-logo.png" || { echo "::error::Original boutique logo missing from archive"; exit 1; }
           grep -q 'sri-lakshmika-hero-model' "$ROOT/index.html" || { echo "::error::Home page not referencing model photograph"; exit 1; }
           cp -a "$ROOT"/. _site/
-          echo "Verified and publishing original boutique website with model photograph and logo"
+          # Preserve the approved original site, but overlay the latest hero CSS
+          # edited in the repository. Otherwise changes to root styles.css are ignored.
+          test -f styles.css || { echo "::error::Repository styles.css missing"; exit 1; }
+          grep -q 'PREMIUM HERO MODEL DISPLAY' styles.css || { echo "::error::Updated hero CSS section missing"; exit 1; }
+          printf '\n/* Hero portrait updates from repository styles.css */\n' >> _site/styles.css
+          sed -n '/PREMIUM HERO MODEL DISPLAY/,$p' styles.css >> _site/styles.css
+          grep -q 'object-fit: contain !important' _site/styles.css || { echo "::error::Portrait no-crop CSS not applied"; exit 1; }
+          echo "Publishing original website and model assets with latest responsive portrait CSS"
           ls -lh _site/assets/
       - name: Configure Pages
         uses: actions/configure-pages@v5
